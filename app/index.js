@@ -9,6 +9,7 @@ import { auth } from '../services/firebaseConfig';
 import AuthInput from '../components/AuthInput';
 import { cleanEmail, getEmailError, friendlyAuthError } from '../utils/authRules';
 import { useAuth } from '../context/AuthContext';
+import PhotoBackground from '../components/PhotoBackground';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -66,69 +67,75 @@ export default function LoginScreen() {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        <View style={styles.logoCircle}>
-          <Ionicons name="bed" size={36} color="#fff" />
-        </View>
-        <Text style={styles.title}>StayEasy</Text>
-        <Text style={styles.subtitle}>Your escape in Mauritius starts here</Text>
+    <View style={styles.root}>
+      <PhotoBackground />
+      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+          <View style={styles.logoCircle}>
+            <Ionicons name="bed" size={36} color="#fff" />
+          </View>
+          <Text style={styles.title}>StayEasy</Text>
+          <Text style={styles.subtitle}>Your escape in Mauritius starts here</Text>
 
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Welcome back</Text>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Welcome back</Text>
 
-          <AuthInput
-            icon="mail-outline"
-            placeholder="Email address"
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType="email-address"
-            error={errors.email}
-          />
+            <AuthInput
+              icon="mail-outline"
+              placeholder="Email address"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              error={errors.email}
+            />
 
-          <AuthInput
-            icon="lock-closed-outline"
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secure
-            error={errors.password}
-          />
+            <AuthInput
+              icon="lock-closed-outline"
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secure
+              error={errors.password}
+            />
 
-          <Pressable onPress={handleForgotPassword} style={styles.forgot}>
-            <Text style={styles.link}>Forgot password?</Text>
+            <Pressable onPress={handleForgotPassword} style={styles.forgot}>
+              <Text style={styles.link}>Forgot password?</Text>
+            </Pressable>
+
+            <Pressable style={[styles.button, loading && styles.buttonDisabled]} onPress={handleLogin} disabled={loading}>
+              <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Log In'}</Text>
+            </Pressable>
+          </View>
+
+          <Pressable onPress={() => router.push('/register')}>
+            <Text style={styles.bottomText}>
+              Don't have an account? <Text style={styles.signUp}>Sign up</Text>
+            </Text>
           </Pressable>
-
-          <Pressable style={[styles.button, loading && styles.buttonDisabled]} onPress={handleLogin} disabled={loading}>
-            <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Log In'}</Text>
-          </Pressable>
-        </View>
-
-        <Pressable onPress={() => router.push('/register')}>
-          <Text style={styles.bottomText}>
-            Don't have an account? <Text style={styles.link}>Sign up</Text>
-          </Text>
-        </Pressable>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  flex: { flex: 1, backgroundColor: '#EAF4FF' },
+  root: { flex: 1, backgroundColor: '#0F172A' },
+  flex: { flex: 1 },
   container: { flexGrow: 1, justifyContent: 'center', padding: 24 },
   logoCircle: {
     width: 72, height: 72, borderRadius: 36, backgroundColor: '#2563EB',
     alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginBottom: 12,
+    borderWidth: 2, borderColor: 'rgba(255,255,255,0.6)',
   },
-  title: { fontSize: 30, fontWeight: 'bold', textAlign: 'center', color: '#0F172A' },
-  subtitle: { fontSize: 14, textAlign: 'center', color: '#64748B', marginBottom: 24, marginTop: 4 },
+  title: {
+    fontSize: 32, fontWeight: 'bold', textAlign: 'center', color: '#fff',
+    textShadowColor: 'rgba(0,0,0,0.4)', textShadowRadius: 8, textShadowOffset: { width: 0, height: 2 },
+  },
+  subtitle: { fontSize: 14, textAlign: 'center', color: 'rgba(255,255,255,0.85)', marginBottom: 24, marginTop: 4 },
   card: {
-    backgroundColor: '#fff', borderRadius: 20, padding: 20, marginBottom: 20,
-    shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 12, shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    backgroundColor: 'rgba(255,255,255,0.92)', borderRadius: 20, padding: 20, marginBottom: 20,
   },
   cardTitle: { fontSize: 20, fontWeight: '700', color: '#0F172A', marginBottom: 16 },
   forgot: { alignSelf: 'flex-end', marginBottom: 16 },
@@ -136,5 +143,6 @@ const styles = StyleSheet.create({
   buttonDisabled: { opacity: 0.6 },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
   link: { color: '#2563EB', fontWeight: '600', fontSize: 14 },
-  bottomText: { textAlign: 'center', color: '#64748B', fontSize: 14 },
+  bottomText: { textAlign: 'center', color: 'rgba(255,255,255,0.85)', fontSize: 14 },
+  signUp: { color: '#fff', fontWeight: '700', textDecorationLine: 'underline' },
 });

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Tabs, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
-import { colors } from '../../constants/theme';
+import FloatingTabBar from '../../components/FloatingTabBar';
 
 export default function TabsLayout() {
   const { user } = useAuth();
@@ -16,10 +16,8 @@ export default function TabsLayout() {
 
   return (
     <Tabs
+      tabBar={(props) => <FloatingTabBar {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textMuted,
-        tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
         headerTitleAlign: 'center',
         headerTitleStyle: { fontWeight: '700' },
       }}
@@ -29,21 +27,27 @@ export default function TabsLayout() {
         options={{
           title: 'Home',
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="bookings"
         options={{
           title: 'My Bookings',
-          tabBarIcon: ({ color, size }) => <Ionicons name="calendar" size={size} color={color} />,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? 'calendar' : 'calendar-outline'} size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? 'person' : 'person-outline'} size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
