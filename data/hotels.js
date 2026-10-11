@@ -11,6 +11,24 @@ export const hotels = [
     amenities: ['Free Wi-Fi', 'Infinity Pool', 'Private Beach', 'Spa & Wellness', 'Breakfast Included', 'Air Conditioning'],
     coords: { lat: -20.0170, lng: 57.5802 },
   },
+  {
+    id: 'h2',
+    name: 'Coral Reef Lodge',
+    city: 'Flic en Flac',
+    pricePerNight: 95,
+    rating: 4.4,
+    comingSoon: true,
+    coords: { lat: -20.2753, lng: 57.3640 },
+  },
+  {
+    id: 'h3',
+    name: 'Le Morne Heights Villas',
+    city: 'Le Morne',
+    pricePerNight: 210,
+    rating: 4.8,
+    comingSoon: true,
+    coords: { lat: -20.4560, lng: 57.3130 },
+  },  
 ];
 
 export function getHotelById(id) {

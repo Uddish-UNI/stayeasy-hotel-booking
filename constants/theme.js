@@ -1,3 +1,5 @@
+// Stores the app's look (colours, spacing, corner roundness, text sizes) so that every screen can import it from one place.
+
 export const colors = {
   primary: '#2563EB',
   secondary: '#F59E0B',

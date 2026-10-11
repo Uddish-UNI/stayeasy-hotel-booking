@@ -66,6 +66,35 @@ function HotelCarousel({ hotel }) {
   );
 }
 
+// One card in the "Our hotels" row. Hotels flagged comingSoon can't be opened.
+function HotelListItem({ item }) {
+  const soon = item.comingSoon;
+  return (
+    <Pressable
+      disabled={soon}
+      style={[styles.hotelItem, soon && styles.hotelItemSoon]}
+      onPress={() => router.push(`/hotel/${item.id}`)}
+    >
+      {item.image ? (
+        <Image source={toImageSource(item.image)} style={styles.hotelItemImage} />
+      ) : (
+        <View style={[styles.hotelItemImage, styles.hotelItemPlaceholder]}>
+          <Ionicons name="business-outline" size={32} color={colors.textMuted} />
+        </View>
+      )}
+      <View style={styles.hotelItemBody}>
+        <Text style={styles.hotelItemName} numberOfLines={1}>{item.name}</Text>
+        <Text style={styles.hotelItemMeta}>{item.city} · ★ {item.rating}</Text>
+        {soon ? (
+          <Text style={styles.soonBadge}>Coming soon</Text>
+        ) : (
+          <Text style={styles.fromText}>From ${item.pricePerNight} / night</Text>
+        )}
+      </View>
+    </Pressable>
+  );
+}
+
 export default function HomeScreen() {
   const { user } = useAuth();
   const insets = useSafeAreaInsets();
@@ -120,7 +149,18 @@ export default function HomeScreen() {
         </Pressable>
       </View>
 
-      <Text style={styles.sectionTitle}>Choose your room</Text>
+      <Text style={styles.sectionTitle}>Our hotels</Text>
+      <Text style={styles.sectionSub}>More destinations opening soon</Text>
+      <FlatList
+        horizontal
+        data={hotels}
+        keyExtractor={(h) => h.id}
+        renderItem={({ item }) => <HotelListItem item={item} />}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: spacing.md, gap: spacing.sm + 2 }}
+      />
+
+      <Text style={styles.sectionTitle}>Rooms at {hotel.name}</Text>
       <Text style={styles.sectionSub}>From ${hotel.pricePerNight} per night</Text>
     </View>
   );
@@ -166,4 +206,17 @@ const styles = StyleSheet.create({
 
   sectionTitle: { fontSize: fontSize.xl, fontWeight: '800', color: colors.text, marginHorizontal: spacing.md, marginTop: spacing.lg },
   sectionSub: { fontSize: fontSize.md, color: colors.textMuted, marginHorizontal: spacing.md, marginBottom: spacing.md, marginTop: 2 },
+
+  hotelItem: {
+    width: 200, backgroundColor: colors.card, borderRadius: 16, overflow: 'hidden',
+    borderWidth: 1, borderColor: colors.border,
+  },
+  hotelItemSoon: { opacity: 0.6 },
+  hotelItemImage: { width: '100%', height: 100, backgroundColor: colors.border },
+  hotelItemPlaceholder: { alignItems: 'center', justifyContent: 'center' },
+  hotelItemBody: { padding: spacing.sm + 2 },
+  hotelItemName: { fontSize: fontSize.md, fontWeight: '800', color: colors.text },
+  hotelItemMeta: { fontSize: fontSize.sm, color: colors.textMuted, marginTop: 2 },
+  fromText: { fontSize: fontSize.sm, fontWeight: '700', color: colors.primary, marginTop: 6 },
+  soonBadge: { fontSize: fontSize.sm, fontWeight: '700', color: colors.secondary, marginTop: 6 },
 });
