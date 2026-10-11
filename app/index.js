@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View, Text, Pressable, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, Platform,
 } from 'react-native';
@@ -8,12 +8,20 @@ import { router } from 'expo-router';
 import { auth } from '../services/firebaseConfig';
 import AuthInput from '../components/AuthInput';
 import { cleanEmail, getEmailError, friendlyAuthError } from '../utils/authRules';
+import { useAuth } from '../context/AuthContext';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const { user, initializing } = useAuth();
+
+  // If Firebase already has a saved session, skip the login screen.
+  useEffect(() => {
+    if (!initializing && user) router.replace('/home');
+  }, [user, initializing]); 
 
   async function handleLogin() {
     const newErrors = {

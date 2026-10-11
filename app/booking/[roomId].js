@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Image, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { useLocalSearchParams, router } from 'expo-router';
 import { getRoomById } from '../../data/hotels';
 import { validateDateRange, validateGuests } from '../../utils/validation';
 import { colors, spacing, fontSize, radius } from '../../constants/theme';
+import { toImageSource } from '../../data/images';
+import { Ionicons } from '@expo/vector-icons';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -49,7 +51,7 @@ export default function BookingScreen() {
   function openPicker(which) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
+    
     // Check-out must be at least one day after check-in; check-in can't be in the past.
     let minimumDate = today;
     if (which === 'out' && checkIn) {
@@ -77,6 +79,13 @@ export default function BookingScreen() {
     });
   }
 
+  // Plus/minus buttons: keep guests between 1 and the room's maximum.
+  function changeGuests(delta) {
+    const current = Number(guests) || 1;
+    const next = Math.min(room.maxGuests, Math.max(1, current + delta));
+    setGuests(String(next));
+  }
+
   function handleContinue() {
     const guestsCheck = validateGuests(guests, room.maxGuests);
     const next = {};
@@ -93,7 +102,7 @@ export default function BookingScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }} keyboardShouldPersistTaps="handled">
-      <Image source={{ uri: room.image }} style={styles.image} />
+      <Image source={toImageSource(room.image)} style={styles.image} />
       <Text style={styles.name}>{room.name}</Text>
       <Text style={styles.meta}>{room.beds} · up to {room.maxGuests} guests · ${room.pricePerNight} per night</Text>
 
@@ -113,7 +122,26 @@ export default function BookingScreen() {
       {errors.dates ? <Text style={styles.error}>{errors.dates}</Text> : null}
 
       <Text style={styles.label}>Guests</Text>
-      <TextInput style={styles.input} value={guests} onChangeText={setGuests} keyboardType="number-pad" />
+      <View style={styles.stepper}>
+        <Pressable
+          style={[styles.stepButton, Number(guests) <= 1 && styles.stepDisabled]}
+          onPress={() => changeGuests(-1)}
+          disabled={Number(guests) <= 1}
+        >
+          <Ionicons name="remove" size={22} color={colors.primary} />
+        </Pressable>
+
+        <Text style={styles.guestCount}>{guests}</Text>
+
+        <Pressable
+          style={[styles.stepButton, Number(guests) >= room.maxGuests && styles.stepDisabled]}
+          onPress={() => changeGuests(1)}
+          disabled={Number(guests) >= room.maxGuests}
+        >
+          <Ionicons name="add" size={22} color={colors.primary} />
+        </Pressable>
+      </View>
+      <Text style={styles.hint}>This room fits up to {room.maxGuests} guests</Text>
       {errors.guests ? <Text style={styles.error}>{errors.guests}</Text> : null}
 
       <View style={styles.summary}>
@@ -158,4 +186,9 @@ const styles = StyleSheet.create({
   totalValue: { color: colors.primary, fontSize: fontSize.lg, fontWeight: '800' },
   button: { backgroundColor: colors.primary, paddingVertical: 14, borderRadius: radius.sm, alignItems: 'center', marginTop: spacing.lg },
   buttonText: { color: '#fff', fontWeight: '700', fontSize: fontSize.md },
+  stepper: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: colors.card, borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm, padding: spacing.sm },
+  stepButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#EFF6FF', alignItems: 'center', justifyContent: 'center' },
+  stepDisabled: { opacity: 0.35 },
+  guestCount: { fontSize: fontSize.lg, fontWeight: '700', color: colors.text },
+  hint: { fontSize: fontSize.sm, color: colors.textMuted, marginTop: spacing.xs },
 });

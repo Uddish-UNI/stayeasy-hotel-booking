@@ -1,4 +1,3 @@
-// TODO: replace the placeholder images and descriptions (hotel + 3 rooms) before submission.
 export const hotels = [
   {
     id: 'h1',
@@ -7,7 +6,7 @@ export const hotels = [
     address: 'Coastal Road, Grand Baie, Mauritius',
     pricePerNight: 120,
     rating: 4.7,
-    image: 'https://picsum.photos/seed/azure-bay/800/500',
+    image: require('../assets/images/hotel4.jpg'),
     description: "Set right on the sand in Grand Baie, Azure Bay Resort & Spa pairs a private beach and infinity pool with easy access to the village's restaurants and boat trips.",
     amenities: ['Free Wi-Fi', 'Infinity Pool', 'Private Beach', 'Spa & Wellness', 'Breakfast Included', 'Air Conditioning'],
     coords: { lat: -20.0170, lng: 57.5802 },
@@ -24,9 +23,9 @@ export const rooms = [
     name: 'Normal Room',
     pricePerNight: 120,
     maxGuests: 2,
-    beds: '1 double bed',
-    description: 'A comfortable room with garden view, ideal for one or two guests.',
-    image: 'https://picsum.photos/seed/room-normal/800/500',
+    beds: '2 single beds',
+    description: 'A comfortable twin room with a floor-to-ceiling window and warm lighting, ideal for one or two guests.',
+    image: require('../assets/images/room-normal.jpg'),
   },
   {
     id: 'duo',
@@ -34,17 +33,17 @@ export const rooms = [
     pricePerNight: 185,
     maxGuests: 4,
     beds: '2 double beds',
-    description: 'A spacious room with two beds and a lagoon view, ideal for friends or family.',
-    image: 'https://picsum.photos/seed/room-duo/800/500',
+    description: 'A spacious room with two double beds, a teal feature wall and a glass door to the garden, ideal for friends or family.',
+    image: require('../assets/images/room-duo.jpg'),
   },
   {
     id: 'suite',
     name: 'Suite',
     pricePerNight: 320,
-    maxGuests: 5,
-    beds: '1 king bed + sofa bed',
-    description: 'Our top room, with a separate living area, private balcony and direct beach view.',
-    image: 'https://picsum.photos/seed/room-suite/800/500',
+    maxGuests: 3,
+    beds: '1 king bed',
+    description: 'Our top room, with a king bed, a private seating corner by the window and a writing desk.',
+    image: require('../assets/images/room-suite.jpg'),
   },
 ];
 

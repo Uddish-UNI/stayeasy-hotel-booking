@@ -4,6 +4,7 @@ import { useLocalSearchParams, router } from 'expo-router';
 import { getHotelById } from '../../data/hotels';
 import { getCurrentLocation, haversineDistanceKm } from '../../utils/location';
 import { colors, spacing, fontSize, radius } from '../../constants/theme';
+import { toImageSource } from '../../data/images';
 
 export default function HotelDetailsScreen() {
   const { id } = useLocalSearchParams();
@@ -46,7 +47,7 @@ export default function HotelDetailsScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: spacing.xl }}>
-      <Image source={{ uri: hotel.image }} style={styles.image} />
+      <Image source={toImageSource(hotel.image)} style={styles.image} />
 
       <View style={styles.body}>
         <View style={styles.row}>
