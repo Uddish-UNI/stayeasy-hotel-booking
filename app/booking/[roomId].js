@@ -65,8 +65,8 @@ export default function BookingScreen() {
       value: current ? fromDateString(current) : minimumDate,
       mode: 'date',
       minimumDate,
-      onChange: (event, selected) => {
-        if (event.type !== 'set' || !selected) return; // user cancelled
+      onValueChange: (event, selected) => {
+        if (!selected) return;
         const str = toDateString(selected);
         if (which === 'in') {
           setCheckIn(str);

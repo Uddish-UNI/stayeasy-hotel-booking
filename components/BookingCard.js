@@ -43,8 +43,8 @@ export default function BookingCard({ booking, compact }) {
         <Text style={styles.price}>${booking.totalPrice}</Text>
       </View>
 
-      {!compact && booking.transactionId ? (
-        <Text style={styles.ref}>Ref: {booking.transactionId}</Text>
+      {!compact && booking.id ? (
+        <Text style={styles.ref}>Ref: {String(booking.id).slice(0, 8).toUpperCase()}</Text>
       ) : null}
     </View>
   );
