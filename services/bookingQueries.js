@@ -27,7 +27,7 @@ export function formatDate(value) {
   return `${Number(d)} ${MONTHS[Number(m) - 1]} ${y}`;
 }
 
-// 'completed' | 'active' | 'upcoming'  (This label comes from BookingCard.js)
+// 'completed' | 'active' | 'upcoming'  (BookingCard.js turns this word into the coloured badge)
 export function getStayStatus(booking) {
   const today = todayString();
   if (booking.checkOut < today) return 'completed';

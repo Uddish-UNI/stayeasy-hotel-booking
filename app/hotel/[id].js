@@ -72,7 +72,7 @@ export default function HotelDetailsScreen() {
 
         <Text style={styles.sectionTitle}>Amenities</Text>
         <View style={styles.chipRow}>
-          {hotel.amenities.map((a) => (
+          {(hotel.amenities || []).map((a) => (
             <View key={a} style={styles.chip}><Text style={styles.chipText}>{a}</Text></View>
           ))}
         </View>
@@ -87,8 +87,14 @@ export default function HotelDetailsScreen() {
           <Text style={styles.footerPrice}>${hotel.pricePerNight}</Text>
           <Text style={styles.footerPerNight}>per night</Text>
         </View>
-        <Pressable style={styles.bookButton} onPress={() => router.back()}>
-          <Text style={styles.bookButtonText}>Choose a Room</Text>
+        <Pressable
+          style={[styles.bookButton, hotel.roomsComingSoon && styles.bookButtonDisabled]}  // Disabled Choose Room for the 2 hotels (Coral Reef Lodge & Le Morne Heights Villas)
+          onPress={() => router.back()}
+          disabled={hotel.roomsComingSoon}
+        >
+          <Text style={styles.bookButtonText}>
+            {hotel.roomsComingSoon ? 'Rooms coming soon' : 'Choose a Room'}
+          </Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -119,4 +125,5 @@ const styles = StyleSheet.create({
   footerPerNight: { fontSize: fontSize.sm, color: colors.textMuted },
   bookButton: { flex: 1, marginLeft: spacing.md, backgroundColor: colors.primary, paddingVertical: 14, borderRadius: radius.sm, alignItems: 'center' },
   bookButtonText: { color: '#fff', fontWeight: '700', fontSize: fontSize.md },
+  bookButtonDisabled: { opacity: 0.5 },
 });

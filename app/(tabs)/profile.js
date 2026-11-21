@@ -59,6 +59,13 @@ export default function ProfileScreen() {
     await AsyncStorage.removeItem(`avatar:${user.uid}`);
   }
 
+  function handleLogout() {
+  Alert.alert('Log out', 'Are you sure you want to log out?', [
+    { text: 'Cancel', style: 'cancel' },
+    { text: 'Log Out', style: 'destructive', onPress: () => signOut(auth) },
+  ]);
+  }
+
   const initial = (user.displayName || user.email || '?').charAt(0).toUpperCase();
   const totalNights = bookings.reduce((sum, b) => sum + (Number(b.nights) || 0), 0);  // 'reduce' walks through the list and builds up one result
   const totalSpent = bookings.reduce((sum, b) => sum + (Number(b.totalPrice) || 0), 0);
@@ -127,7 +134,7 @@ export default function ProfileScreen() {
         recent.map((b) => <BookingCard key={b.id} booking={b} compact />)
       )}
 
-      <Pressable style={styles.logout} onPress={() => signOut(auth)}>
+      <Pressable style={styles.logout} onPress={handleLogout}>
         <Ionicons name="log-out-outline" size={20} color={colors.danger} />
         <Text style={styles.logoutText}>Log Out</Text>
       </Pressable>

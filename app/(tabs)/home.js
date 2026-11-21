@@ -68,11 +68,9 @@ function HotelCarousel({ hotel }) {
 
 // One card in the "Our hotels" row. Hotels flagged comingSoon can't be opened.
 function HotelListItem({ item }) {
-  const soon = item.comingSoon;
   return (
     <Pressable
-      disabled={soon}
-      style={[styles.hotelItem, soon && styles.hotelItemSoon]}
+      style={styles.hotelItem}
       onPress={() => router.push(`/hotel/${item.id}`)}
     >
       {item.image ? (
@@ -85,11 +83,10 @@ function HotelListItem({ item }) {
       <View style={styles.hotelItemBody}>
         <Text style={styles.hotelItemName} numberOfLines={1}>{item.name}</Text>
         <Text style={styles.hotelItemMeta}>{item.city} · ★ {item.rating}</Text>
-        {soon ? (
-          <Text style={styles.soonBadge}>Coming soon</Text>
-        ) : (
-          <Text style={styles.fromText}>From ${item.pricePerNight} / night</Text>
-        )}
+        <Text style={styles.fromText}>From ${item.pricePerNight} / night</Text>
+        {item.roomsComingSoon ? (
+          <Text style={styles.soonBadge}>Rooms coming soon</Text>
+        ) : null}
       </View>
     </Pressable>
   );
