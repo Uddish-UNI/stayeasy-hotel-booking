@@ -97,7 +97,7 @@ function HotelListItem({ item }) {
 
 export default function HomeScreen() {
   const { user } = useAuth();
-  const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();  // Check how much space the phone’s notch or status bar takes at the top and bottom, so content isn’t hidden under it.
   const hotel = hotels[0];
   const [photo, setPhoto] = useState(null);
 

@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-nati
 import { useLocalSearchParams, router } from 'expo-router';
 import { getRoomById, hotels } from '../data/hotels';
 import { sendTestReminder } from '../utils/notifications';
+import { formatDate } from '../services/bookingQueries';
 import { colors, spacing, fontSize, radius } from '../constants/theme';
 
 function Row({ label, value }) {
@@ -39,8 +40,8 @@ export default function SummaryScreen() {
       <View style={styles.card}>
         <Row label="Hotel" value={hotel.name} />
         <Row label="Room" value={room ? room.name : roomId} />
-        <Row label="Check-in" value={checkIn} />
-        <Row label="Check-out" value={checkOut} />
+        <Row label="Check-in" value={formatDate(checkIn)} />
+        <Row label="Check-out" value={formatDate(checkOut)} />
         <Row label="Nights" value={nights} />
         <Row label="Guests" value={guests} />
         <Row label="Paid with" value={`Card ending ${cardLast4}`} />

@@ -1,3 +1,4 @@
+// Register screen: creates a new Firebase account, then saves the user's name on it.
 import { useState } from 'react';
 import {
   View, Text, Pressable, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, Platform,
@@ -12,6 +13,7 @@ import {
 import PhotoBackground from '../components/PhotoBackground';
 
 export default function RegisterScreen() {
+  // One slot per field: what the user typed. errors = red messages, loading = button locked while waiting.
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,7 +21,9 @@ export default function RegisterScreen() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  // Runs when Sign Up is pressed.
   async function handleRegister() {
+    // 1. Check every field on the phone first. Each check gives an error message, or null if OK.
     const newErrors = {
       name: getNameError(name),
       email: getEmailError(email),
@@ -27,17 +31,21 @@ export default function RegisterScreen() {
       confirm: confirm !== password ? 'Passwords do not match.' : null,
     };
     setErrors(newErrors);
+    // 2. If ANY field has a message, stop here. Firebase is not contacted.
     if (Object.values(newErrors).some(Boolean)) return;
 
     setLoading(true);
     try {
+      // 3. Create the account (Firebase only stores email + password)...
       const credential = await createUserWithEmailAndPassword(auth, cleanEmail(email), password);
+      // 4. ...then attach the user's name to it, shown on Home and Profile.
       await updateProfile(credential.user, { displayName: cleanName(name) });
+      // Creating an account also logs the user in, so go straight to Home.
       router.replace('/home');
     } catch (error) {
       Alert.alert('Registration failed', friendlyAuthError(error));
     } finally {
-      setLoading(false);
+      setLoading(false);  // unlock the button whether it worked or failed
     }
   }
 
@@ -76,6 +84,7 @@ export default function RegisterScreen() {
               secure
               error={errors.password}
             />
+            {/* Live checklist: each rule turns green as the password meets it */}
             <PasswordChecklist password={password} />
             <AuthInput
               icon="shield-checkmark-outline"

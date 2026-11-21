@@ -10,7 +10,7 @@ const FAILURE_CARDS = {
 
 export async function processPayment({ cardNumber, amount }) {
   // Pretend to wait for the bank.
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  await new Promise((resolve) => setTimeout(resolve, 1500));  // A Small timer to mimic processing time of about 1.5 seconds
 
   const digits = cardNumber.replace(/\s/g, '');
   if (FAILURE_CARDS[digits]) {

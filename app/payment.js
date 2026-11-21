@@ -24,7 +24,7 @@ export default function PaymentScreen() {
 
   function formatNumber(text) {
     const digits = text.replace(/\D/g, '').slice(0, 19);
-    return digits.replace(/(.{4})/g, '$1 ').trim();
+    return digits.replace(/(.{4})/g, '$1 ').trim();  // ensure there is a space after every 4 digits
   }
 
   function formatExpiry(text) {

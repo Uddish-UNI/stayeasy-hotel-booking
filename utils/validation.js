@@ -20,7 +20,7 @@ export function validateDateRange(checkIn, checkOut) {
   today.setHours(0, 0, 0, 0);
   if (start < today) return { valid: false, message: 'Check-in cannot be in the past.' };
   if (end <= start) return { valid: false, message: 'Check-out must be after check-in.' };
-  const nights = Math.round((end - start) / 86400000);
+  const nights = Math.round((end - start) / 86400000);  // 86,400,000 Milliseconds = 24 Hours = 1 Day
   if (nights > 30) return { valid: false, message: 'Maximum stay is 30 nights.' };
   return { valid: true, nights };
 }

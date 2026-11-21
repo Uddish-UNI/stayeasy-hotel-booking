@@ -45,7 +45,7 @@ export function getNameError(name) {
   if (value.length < 2) return 'Please enter your full name.';
   if (value.length > 50) return 'Name is too long (max 50 characters).';
   if (/[0-9{}\[\]\\\/$%^*=+|~`@#!?;:"_]/.test(value)) {
-    return 'Name contains characters that are not allowed.';
+    return 'Name contains characters that are not allowed.';  // Excluded both apostrophe (') and hyphen (-)
   }
   return null;
 }

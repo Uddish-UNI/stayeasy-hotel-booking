@@ -60,7 +60,7 @@ export default function ProfileScreen() {
   }
 
   const initial = (user.displayName || user.email || '?').charAt(0).toUpperCase();
-  const totalNights = bookings.reduce((sum, b) => sum + (Number(b.nights) || 0), 0);
+  const totalNights = bookings.reduce((sum, b) => sum + (Number(b.nights) || 0), 0);  // 'reduce' walks through the list and builds up one result
   const totalSpent = bookings.reduce((sum, b) => sum + (Number(b.totalPrice) || 0), 0);
   const recent = [...bookings].sort((a, b) => b.checkIn.localeCompare(a.checkIn)).slice(0, 3);
   const since = memberSince(user);
